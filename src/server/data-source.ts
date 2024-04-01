@@ -1,13 +1,15 @@
-import "reflect-metadata"
-import { DataSource, Transaction } from "typeorm"
-import { config } from 'dotenv';
+import "reflect-metadata";
+import { DataSource } from "typeorm";
+import { config } from "dotenv";
 import { User } from "../entity/User.entity";
 import { Coin } from "../entity/Coin.entity";
 import { Network } from "../entity/Network.entity";
+import { TransactionFee } from "../entity/TransactionFee.entity";
+import { Transaction } from "../entity/Transaction.entity";
 
-config()
+config();
 
-const entities = [User, Coin, Network, Transaction]
+const entities = [User, Coin, Network, Transaction, TransactionFee];
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -17,8 +19,8 @@ export const AppDataSource = new DataSource({
     password: process.env.MYSQL_PASSWORD,
     database: process.env.DB_NAME,
     synchronize: true,
-    logging: true,
+    logging: false,
     entities: entities,
     migrations: [],
     subscribers: [],
-})
+});

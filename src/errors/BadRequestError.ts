@@ -1,50 +1,50 @@
-import { CustomError } from './CustomError';
+import { CustomError } from "./CustomError";
 
 export default class BadRequestError extends CustomError {
-  private static readonly _statusCode = 400;
-  private readonly _code: number;
-  private readonly _logging: boolean;
-  private readonly _context: { [key: string]: any };
-  private readonly _errors: any[];
+    private static readonly DEFAULT_STATUS_CODE = 400;
+    private readonly _statusCode: number;
+    private readonly _logging: boolean;
+    private readonly _context: { [key: string]: any };
+    private readonly _errors: any[];
 
-  constructor(params?: {
-    code?: number;
-    message?: string;
-    logging?: boolean;
-    context?: { [key: string]: any };
-    errors?: any[];
-  }) {
-    let { code, message, logging, errors = [] } = params || {};
+    constructor(
+        params: {
+            code?: number;
+            message?: string;
+            logging?: boolean;
+            context?: { [key: string]: any };
+            errors?: any[];
+        } = {}
+    ) {
+        const {
+            code = BadRequestError.DEFAULT_STATUS_CODE,
+            message: customMessage = "Bad request",
+            logging = false,
+            context = {},
+            errors = [],
+        } = params;
 
-    console.log(errors);
+        const message = errors.length > 0 ? errors[0].msg : customMessage;
 
-    if (errors?.length > 0) {
-      message = errors[0].msg;
-    } else {
-      errors.push({
-        msg: message,
-      });
+        super(message);
+        this._statusCode = code;
+        this._logging = logging;
+        this._context = context;
+        this._errors = errors;
+
+        // Ensure correct prototype chain
+        Object.setPrototypeOf(this, BadRequestError.prototype);
     }
 
-    super(message || 'Bad request');
-    this._code = code || BadRequestError._statusCode;
-    this._logging = logging || false;
-    this._context = params?.context || {};
-    this._errors = errors || [];
+    get errors() {
+        return this._errors;
+    }
 
-    // Only because we are extending a built in class
-    Object.setPrototypeOf(this, BadRequestError.prototype);
-  }
+    get statusCode() {
+        return this._statusCode;
+    }
 
-  get errors() {
-    return this._errors;
-  }
-
-  get statusCode() {
-    return this._code;
-  }
-
-  get logging() {
-    return this._logging;
-  }
+    get logging() {
+        return this._logging;
+    }
 }

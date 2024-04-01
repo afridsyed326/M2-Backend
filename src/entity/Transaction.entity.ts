@@ -1,57 +1,73 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from './User.entity';
-// import { Wallet } from './wallet.model';
-// import { Order } from './order.model';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    BaseEntity,
+    ManyToOne,
+    JoinColumn,
+} from "typeorm";
+import { User } from "./User.entity";
+import { Coin } from "./Coin.entity";
 
 // ENUMS
-enum COIN_TRANSACTION_TYPE {
-    DEPOSIT = 'DEPOSIT',
-    TRANSFER = 'TRANSFER',
-    WITHDRAW = 'WITHDRAW',
+export enum COIN_TRANSACTION_TYPE {
+    DEPOSIT = "DEPOSIT",
+    TRANSFER = "TRANSFER",
+    WITHDRAW = "WITHDRAW",
 }
 
-enum TRANSACTION_DIRECTION {
-  DEBIT = 'DEBIT',
-  CREDIT = 'CREDIT',
+export enum TRANSACTION_DIRECTION {
+    DEBIT = "DEBIT",
+    CREDIT = "CREDIT",
 }
 
-enum TRANSACTION_STATUS {
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
-  REJECTED = 'REJECTED',
+export enum TRANSACTION_STATUS {
+    PENDING = "PENDING",
+    COMPLETED = "COMPLETED",
+    REJECTED = "REJECTED",
 }
 
 // ENTITY
 @Entity()
 export class Transaction extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @ManyToOne(() => User, { eager: true }) // Assuming User is another entity
-  @JoinColumn()
-  user: User;
+    @ManyToOne(() => User, { eager: true })
+    @JoinColumn()
+    user: User;
 
-  @Column({ enum: COIN_TRANSACTION_TYPE })
-  type: string;
+    @ManyToOne(() => Coin, { eager: true })
+    @JoinColumn()
+    coin: Coin;
 
-  @Column({ default: 0 })
-  amount: number;
+    @Column({
+        type: "enum",
+        enum: COIN_TRANSACTION_TYPE,
+    })
+    type: COIN_TRANSACTION_TYPE;
 
-  @Column({ nullable: true })
-  address: string;
+    @Column({
+        type: "enum",
+        enum: TRANSACTION_DIRECTION,
+    })
+    direction: TRANSACTION_DIRECTION;
 
-  @Column({ enum: TRANSACTION_DIRECTION })
-  direction: string;
+    @Column({ default: 0 })
+    amount: number;
 
-  @Column({ nullable: true })
-  hash: string;
+    @Column({ nullable: true })
+    address: string;
 
-  @Column({ enum: TRANSACTION_STATUS, default: TRANSACTION_STATUS.COMPLETED })
-  status: string;
+    @Column({ nullable: true })
+    hash: string;
 
-  @Column({ default: 0 })
-  fee: number;
+    @Column({
+        enumName: "transaction_status",
+        default: TRANSACTION_STATUS.PENDING,
+    })
+    status: TRANSACTION_STATUS;
 
-  @Column({ default: null })
-  deletedAt: Date;
+    @Column({ default: 0 })
+    fee: number;
 }
