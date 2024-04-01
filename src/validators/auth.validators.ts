@@ -7,3 +7,8 @@ export const validateRegistration = [
     check('firstName').notEmpty(),
     check('lastName').notEmpty()
 ];
+
+export const validateLogin = [
+    check('username').notEmpty().withMessage('Email or username is required'),
+    check('password').notEmpty().withMessage('Password is required')
+];
