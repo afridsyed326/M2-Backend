@@ -24,8 +24,9 @@
       "typeorm": "0.3.20"
    },
    "scripts": {
-      "start": "ts-node src/index.ts",
+      "start": "ts-node build/index.js",
       "dev": "ts-node-dev --respawn src/index.ts",
+      "build": "npx tsc",
       "typeorm": "typeorm-ts-node-commonjs"
    }
 }
