@@ -57,9 +57,6 @@ export class Transaction extends BaseEntity {
     amount: number;
 
     @Column({ nullable: true })
-    address: string;
-
-    @Column({ nullable: true })
     hash: string;
 
     @Column({

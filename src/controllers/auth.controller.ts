@@ -8,6 +8,7 @@ import {
     getPasswordHash,
     validateUserPassword,
 } from "../services/users.service";
+import { generateWalletAddress } from "../services/wallet.service";
 
 export const userRegisterController = async (req: Request, res: Response) => {
     const { email, username, password, confirmPassword, firstName, lastName } =
@@ -32,6 +33,9 @@ export const userRegisterController = async (req: Request, res: Response) => {
         newUser.password = newPassowrd;
         newUser.firstName = firstName;
         newUser.lastName = lastName;
+
+        const walletAddress = await generateWalletAddress()
+        newUser.walletAddress = walletAddress;
 
         await AppDataSource.manager.save(newUser);
 
