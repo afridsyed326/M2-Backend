@@ -19,7 +19,7 @@ abstract class AbstractApp {
   protected setupMiddlewares(): void {
     this.app.use(express.json());
     this.app.use(cors({
-      origin: ['https//m2x.afrid.dev', 'http://localhost:3000'],
+      origin: ['https://m2x-api.afrid.dev', 'https://m2x.afrid.dev', 'http://localhost:3000'],
       methods: ['GET', 'POST'],
       allowedHeaders: ['Content-Type', 'Authorization'],
     }));
