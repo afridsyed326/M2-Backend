@@ -18,7 +18,11 @@ abstract class AbstractApp {
   // Default empty implementations for methods
   protected setupMiddlewares(): void {
     this.app.use(express.json());
-    this.app.use(cors());
+    this.app.use(cors({
+      origin: ['https//m2x.afrid.dev', 'http://localhost:3000'],
+      methods: ['GET', 'POST'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }));
     // add body parser
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use('/', express.static('public'));
