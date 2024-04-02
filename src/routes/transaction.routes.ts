@@ -1,9 +1,12 @@
 import express, { Router } from "express";
-import { sendCoins } from "../controllers/transaction.controller";
+import {
+    getTransactionHistory,
+    sendCoins,
+} from "../controllers/transaction.controller";
 
 const router: Router = express.Router();
 
-router.get("/", () => {});
+router.get("/", getTransactionHistory);
 router.post("/send", sendCoins);
 
 export default router;

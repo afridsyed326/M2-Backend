@@ -4,6 +4,8 @@ import {
     Column,
     BaseEntity,
     ManyToOne,
+    CreateDateColumn,
+    UpdateDateColumn,
     JoinColumn,
 } from "typeorm";
 import { User } from "./User.entity";
@@ -64,6 +66,12 @@ export class Transaction extends BaseEntity {
         default: TRANSACTION_STATUS.PENDING,
     })
     status: TRANSACTION_STATUS;
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 
     @Column({ default: 0 })
     fee: number;
